@@ -4,6 +4,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -29,7 +31,12 @@ public class TaskListActivity extends ActionBarActivity {
 
     private class TaskAdapter extends ArrayAdapter<Task> {
         TaskAdapter(Task[] tasks) {
-            super(TaskListActivity.this, android.R.layout.simple_list_item_1, tasks);
+            super(TaskListActivity.this, R.layout.list_view_layout,R.id.textview1, tasks);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            return super.getView(position, convertView, parent);
         }
     }
 
