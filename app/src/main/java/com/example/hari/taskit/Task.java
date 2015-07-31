@@ -1,11 +1,12 @@
 package com.example.hari.taskit;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Nicky on 7/31/2015.
  */
-public class Task {
+public class Task implements Serializable{
     private String mName;
     private Date mDueDate;
     private boolean mDone;
