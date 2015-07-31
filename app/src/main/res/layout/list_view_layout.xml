@@ -17,6 +17,7 @@
     <CheckBox
         android:id="@+id/checkbox1"
         android:enabled="false"
+        android:focusable="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
