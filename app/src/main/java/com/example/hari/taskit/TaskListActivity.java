@@ -16,17 +16,21 @@ public class TaskListActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_list);
-        Task[] listItems=new Task[3];
-        listItems[0]=new Task();
+        Task[] listItems = new Task[3];
+        listItems[0] = new Task();
         listItems[0].setName("Task 1");
-        listItems[1]=new Task();
+        listItems[1] = new Task();
         listItems[1].setName("Task 2");
-        listItems[2]=new Task();
+        listItems[2] = new Task();
         listItems[2].setName("Task 3");
-        ListView listView= (ListView) findViewById(R.id.listView);
-        listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listItems)); //takes every object ie listItems
-                                                                                                        // and calls listItems.toString() to generate listView
+        ListView listView = (ListView) findViewById(R.id.listView);
+        listView.setAdapter(new TaskAdapter(listItems));
+    }
 
+    private class TaskAdapter extends ArrayAdapter<Task> {
+        TaskAdapter(Task[] tasks) {
+            super(TaskListActivity.this, android.R.layout.simple_list_item_1, tasks);
+        }
     }
 
     @Override
