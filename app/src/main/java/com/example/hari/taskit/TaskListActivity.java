@@ -43,7 +43,7 @@ public class TaskListActivity extends ActionBarActivity {
             Task task=getItem(position);//get object into task
             TextView taskName= (TextView) convertView.findViewById(R.id.textview1);//assign textview1 into TextView variable
             taskName.setText(task.getName());//set each TextView row to corresponding Task objects name
-            CheckBox doneBox= (CheckBox) findViewById(R.id.checkbox1);
+            CheckBox doneBox= (CheckBox) convertView.findViewById(R.id.checkbox1);
             doneBox.setChecked(task.isDone());
             return convertView;
         }
