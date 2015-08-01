@@ -2,9 +2,14 @@ package com.example.hari.taskit;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.method.CharacterPickerDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 
 
 public class TaskActivity extends ActionBarActivity {
@@ -15,6 +20,32 @@ public class TaskActivity extends ActionBarActivity {
         setContentView(R.layout.activity_task);
         Task task= (Task) getIntent().getSerializableExtra("EXTRA");
         Log.d("MainActivity",task.getName());
+        EditText taskNameInput= (EditText) findViewById(R.id.taskname);
+        CheckBox doneBox= (CheckBox) findViewById(R.id.donecheckbox);
+        Button dateBtn= (Button) findViewById(R.id.taskdatebtn);
+        Button submitBtn= (Button) findViewById(R.id.submittask);
+
+        taskNameInput.setText(task.getName());
+        if(task.getDueDate()==null){
+            dateBtn.setText(R.string.No_Date);
+        }else {
+            dateBtn.setText(task.getDueDate().toString());
+        }
+        doneBox.setChecked(task.isDone());
+        dateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+            }
+        });
+
+        submitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
