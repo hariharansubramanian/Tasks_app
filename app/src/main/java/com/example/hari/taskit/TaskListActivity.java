@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class TaskListActivity extends ActionBarActivity {
@@ -26,6 +27,7 @@ public class TaskListActivity extends ActionBarActivity {
         Task[] listItems = new Task[3];
         listItems[0] = new Task();
         listItems[0].setName("Task 1");
+        listItems[0].setDueDate(new Date());
         listItems[0].setDone(true);
         listItems[1] = new Task();
         listItems[1].setName("Task 2");
