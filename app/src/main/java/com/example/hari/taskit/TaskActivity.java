@@ -21,20 +21,26 @@ import java.util.Date;
 public class TaskActivity extends ActionBarActivity {
     Button dateBtn;
     Calendar cal;
+    Task task;
+    EditText taskNameInput;
+    CheckBox doneBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
-        Task task = (Task) getIntent().getSerializableExtra("EXTRA");
+        task = (Task) getIntent().getSerializableExtra("EXTRA");
         Log.d("MainActivity", task.getName());
-        EditText taskNameInput = (EditText) findViewById(R.id.taskname);
-        CheckBox doneBox = (CheckBox) findViewById(R.id.donecheckbox);
+        taskNameInput = (EditText) findViewById(R.id.taskname);
+        doneBox = (CheckBox) findViewById(R.id.donecheckbox);
         dateBtn = (Button) findViewById(R.id.taskdatebtn);
         Button submitBtn = (Button) findViewById(R.id.submittask);
         cal = Calendar.getInstance();
-        cal.setTime(task.getDueDate());
-
+        if (task.getDueDate() == null) {
+            cal.setTime(new Date());
+        } else {
+            cal.setTime(task.getDueDate());
+        }
         taskNameInput.setText(task.getName());
         if (task.getDueDate() == null) {
             dateBtn.setText(R.string.No_Date);
@@ -62,6 +68,9 @@ public class TaskActivity extends ActionBarActivity {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                task.setName(taskNameInput.getText().toString());
+                task.setDueDate(cal.getTime());
+                task.setDone(doneBox.isChecked());
 
             }
         });
