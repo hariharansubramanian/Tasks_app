@@ -1,6 +1,7 @@
 package com.example.hari.taskit;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.method.CharacterPickerDialog;
@@ -71,6 +72,10 @@ public class TaskActivity extends ActionBarActivity {
                 task.setName(taskNameInput.getText().toString());
                 task.setDueDate(cal.getTime());
                 task.setDone(doneBox.isChecked());
+                Intent i = new Intent();
+                i.putExtra("EXTRA", task);
+                setResult(RESULT_OK, i);
+                finish();
 
             }
         });
