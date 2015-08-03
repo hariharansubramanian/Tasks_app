@@ -19,6 +19,8 @@ import java.util.Date;
 
 
 public class TaskActivity extends ActionBarActivity {
+    Button dateBtn;
+    Calendar cal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,17 +30,16 @@ public class TaskActivity extends ActionBarActivity {
         Log.d("MainActivity", task.getName());
         EditText taskNameInput = (EditText) findViewById(R.id.taskname);
         CheckBox doneBox = (CheckBox) findViewById(R.id.donecheckbox);
-        Button dateBtn = (Button) findViewById(R.id.taskdatebtn);
+        dateBtn = (Button) findViewById(R.id.taskdatebtn);
         Button submitBtn = (Button) findViewById(R.id.submittask);
-        final Calendar cal = Calendar.getInstance();
+        cal = Calendar.getInstance();
         cal.setTime(task.getDueDate());
 
         taskNameInput.setText(task.getName());
         if (task.getDueDate() == null) {
             dateBtn.setText(R.string.No_Date);
         } else {
-            DateFormat dateFormat = DateFormat.getDateInstance();
-            dateBtn.setText(dateFormat.format(task.getDueDate()));
+            updateButton();
         }
         doneBox.setChecked(task.isDone());
         dateBtn.setOnClickListener(new View.OnClickListener() {
@@ -47,8 +48,10 @@ public class TaskActivity extends ActionBarActivity {
                 DatePickerDialog dpd = new DatePickerDialog(TaskActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
-
+                        cal.set(Calendar.YEAR, year);
+                        cal.set(Calendar.MONTH, monthOfYear);
+                        cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        updateButton();
                     }
                 }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
                 dpd.show();
@@ -62,6 +65,11 @@ public class TaskActivity extends ActionBarActivity {
 
             }
         });
+    }
+
+    private void updateButton() {
+        DateFormat dateFormat = DateFormat.getDateInstance();
+        dateBtn.setText(dateFormat.format(cal.getTime()));
     }
 
     @Override
