@@ -74,7 +74,7 @@ public class TaskActivity extends ActionBarActivity {
                 task.setDone(doneBox.isChecked());
                 Intent i = new Intent();
                 i.putExtra("EXTRA", task);
-                setResult(RESULT_OK, i);
+                setResult(RESULT_OK,i);
                 finish();
 
             }

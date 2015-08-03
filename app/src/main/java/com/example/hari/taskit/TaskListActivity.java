@@ -19,12 +19,16 @@ import java.util.Date;
 
 
 public class TaskListActivity extends ActionBarActivity {
+    private static final int EDIT_TASK_REQUEST=10;
+    private int itemClickPosition; //to capture which item is selected from listView
+    private Task[] listItems;
+    private TaskAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_list);
-        Task[] listItems = new Task[3];
+        listItems = new Task[3];
         listItems[0] = new Task();
         listItems[0].setName("Task 1");
         listItems[0].setDueDate(new Date());
@@ -34,20 +38,35 @@ public class TaskListActivity extends ActionBarActivity {
         listItems[2] = new Task();
         listItems[2].setName("Task 3");
         ListView listView = (ListView) findViewById(R.id.listView);
-        listView.setAdapter(new TaskAdapter(listItems));
+        mAdapter = new TaskAdapter(listItems);
+        listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d("MainActivity", "Position clicked is " + position);
-                Task task= (Task) parent.getAdapter().getItem(position);
-                Intent i=new Intent(TaskListActivity.this,TaskActivity.class);
-                i.putExtra("EXTRA",task);
-                startActivity(i);
+                itemClickPosition = position;
+                Task task = (Task) parent.getAdapter().getItem(position);
+                Intent i = new Intent(TaskListActivity.this, TaskActivity.class);
+                i.putExtra("EXTRA", task);
+                startActivityForResult(i,EDIT_TASK_REQUEST);
 
             }
         });
+
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EDIT_TASK_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Task task = (Task) data.getSerializableExtra("EXTRA");
+                listItems[itemClickPosition] = task;
+                mAdapter.notifyDataSetChanged(); //Notify adapter to change listView
+
+            }
+        }
+    }
     private class TaskAdapter extends ArrayAdapter<Task> {
         TaskAdapter(Task[] tasks) {
             super(TaskListActivity.this, R.layout.list_view_layout, R.id.textview1, tasks);
