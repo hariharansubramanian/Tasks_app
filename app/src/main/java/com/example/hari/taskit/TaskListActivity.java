@@ -134,6 +134,13 @@ public class TaskListActivity extends ActionBarActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        int id=item.getItemId();
+        if(id==R.id.delete_from_list){
+            AdapterView.AdapterContextMenuInfo menuInfo= (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            listItems.remove(menuInfo.position);
+            mAdapter.notifyDataSetChanged();
+        }
         return super.onContextItemSelected(item);
+
     }
 }
