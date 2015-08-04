@@ -21,22 +21,22 @@ import java.util.Date;
 public class TaskListActivity extends ActionBarActivity {
     private static final int EDIT_TASK_REQUEST=10;
     private int itemClickPosition; //to capture which item is selected from listView
-    private Task[] listItems;
+    private ArrayList<Task> listItems;
     private TaskAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_list);
-        listItems = new Task[3];
-        listItems[0] = new Task();
-        listItems[0].setName("Task 1");
-        listItems[0].setDueDate(new Date());
-        listItems[0].setDone(true);
-        listItems[1] = new Task();
-        listItems[1].setName("Task 2");
-        listItems[2] = new Task();
-        listItems[2].setName("Task 3");
+        listItems = new ArrayList<>();
+        listItems.add(new Task());
+        listItems.get(0).setName("Task 1");
+        listItems.get(0).setDueDate(new Date());
+        listItems.get(0).setDone(true);
+        listItems.add(new Task());
+        listItems.get(1).setName("Task 2");
+        listItems.add(new Task());
+        listItems.get(2).setName("Task 3");
         ListView listView = (ListView) findViewById(R.id.listView);
         mAdapter = new TaskAdapter(listItems);
         listView.setAdapter(mAdapter);
@@ -61,14 +61,14 @@ public class TaskListActivity extends ActionBarActivity {
         if (requestCode == EDIT_TASK_REQUEST) {
             if (resultCode == RESULT_OK) {
                 Task task = (Task) data.getSerializableExtra("EXTRA");
-                listItems[itemClickPosition] = task;
+                listItems.set(itemClickPosition,task);
                 mAdapter.notifyDataSetChanged(); //Notify adapter to change listView
 
             }
         }
     }
     private class TaskAdapter extends ArrayAdapter<Task> {
-        TaskAdapter(Task[] tasks) {
+        TaskAdapter(ArrayList<Task> tasks) {
             super(TaskListActivity.this, R.layout.list_view_layout, R.id.textview1, tasks);
         }
 
