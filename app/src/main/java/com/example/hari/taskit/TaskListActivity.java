@@ -19,7 +19,8 @@ import java.util.Date;
 
 
 public class TaskListActivity extends ActionBarActivity {
-    private static final int EDIT_TASK_REQUEST=10;
+    private static final int EDIT_TASK_REQUEST = 10;
+    private static final int CREATE_TASK_REQUEST = 11;
     private int itemClickPosition; //to capture which item is selected from listView
     private ArrayList<Task> listItems;
     private TaskAdapter mAdapter;
@@ -48,7 +49,7 @@ public class TaskListActivity extends ActionBarActivity {
                 Task task = (Task) parent.getAdapter().getItem(position);
                 Intent i = new Intent(TaskListActivity.this, TaskActivity.class);
                 i.putExtra("EXTRA", task);
-                startActivityForResult(i,EDIT_TASK_REQUEST);
+                startActivityForResult(i, EDIT_TASK_REQUEST);
 
             }
         });
@@ -61,12 +62,13 @@ public class TaskListActivity extends ActionBarActivity {
         if (requestCode == EDIT_TASK_REQUEST) {
             if (resultCode == RESULT_OK) {
                 Task task = (Task) data.getSerializableExtra("EXTRA");
-                listItems.set(itemClickPosition,task);
+                listItems.set(itemClickPosition, task);
                 mAdapter.notifyDataSetChanged(); //Notify adapter to change listView
 
             }
         }
     }
+
     private class TaskAdapter extends ArrayAdapter<Task> {
         TaskAdapter(ArrayList<Task> tasks) {
             super(TaskListActivity.this, R.layout.list_view_layout, R.id.textview1, tasks);
@@ -99,6 +101,10 @@ public class TaskListActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+        if (id == R.id.addtask) {
+            Intent i = new Intent(TaskListActivity.this, TaskActivity.class);
+            startActivityForResult(i, CREATE_TASK_REQUEST);
+        }
         if (id == R.id.action_settings) {
             return true;
         }

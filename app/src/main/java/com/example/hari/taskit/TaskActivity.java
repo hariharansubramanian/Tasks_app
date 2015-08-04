@@ -31,12 +31,14 @@ public class TaskActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
         task = (Task) getIntent().getSerializableExtra("EXTRA");
-        Log.d("MainActivity", task.getName());
         taskNameInput = (EditText) findViewById(R.id.taskname);
         doneBox = (CheckBox) findViewById(R.id.donecheckbox);
         dateBtn = (Button) findViewById(R.id.taskdatebtn);
         Button submitBtn = (Button) findViewById(R.id.submittask);
         cal = Calendar.getInstance();
+        if (task == null) {
+            task = new Task();
+        }
         if (task.getDueDate() == null) {
             cal.setTime(new Date());
         } else {
@@ -74,7 +76,7 @@ public class TaskActivity extends ActionBarActivity {
                 task.setDone(doneBox.isChecked());
                 Intent i = new Intent();
                 i.putExtra("EXTRA", task);
-                setResult(RESULT_OK,i);
+                setResult(RESULT_OK, i);
                 finish();
 
             }

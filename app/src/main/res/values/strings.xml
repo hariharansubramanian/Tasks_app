@@ -7,4 +7,5 @@
     <string name="Done">Done:</string>
     <string name="SubmitTaskOk">OK</string>
     <string name="No_Date">No Date set</string>
+    <string name="add_task">Add Task</string>
 </resources>
