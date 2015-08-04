@@ -6,8 +6,8 @@
         android:id="@+id/addtask"
         android:orderInCategory="99"
         android:title="@string/add_task"
-        app:showAsAction="always"
-        android:icon="@drawable/abc_ic_menu_paste_mtrl_am_alpha"/>
+        app:showAsAction="ifRoom"
+        android:icon="@android:drawable/ic_menu_add"/>
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

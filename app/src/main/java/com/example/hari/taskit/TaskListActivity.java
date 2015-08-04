@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseBooleanArray;
+import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -17,6 +20,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Date;
+
+import static android.widget.AbsListView.CHOICE_MODE_MULTIPLE_MODAL;
 
 
 public class TaskListActivity extends ActionBarActivity {
@@ -39,8 +44,7 @@ public class TaskListActivity extends ActionBarActivity {
         listItems.get(1).setName("Task 2");
         listItems.add(new Task());
         listItems.get(2).setName("Task 3");
-        ListView listView = (ListView) findViewById(R.id.listView);
-        registerForContextMenu(listView);
+        final ListView listView = (ListView) findViewById(R.id.listView);
         mAdapter = new TaskAdapter(listItems);
         listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -52,6 +56,47 @@ public class TaskListActivity extends ActionBarActivity {
                 Intent i = new Intent(TaskListActivity.this, TaskActivity.class);
                 i.putExtra("EXTRA", task);
                 startActivityForResult(i, EDIT_TASK_REQUEST);
+
+            }
+        });
+        listView.setChoiceMode(CHOICE_MODE_MULTIPLE_MODAL);
+        listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+            @Override
+            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+
+
+            }
+
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                getMenuInflater().inflate(R.menu.menu_list_delete, menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                int id = item.getItemId();
+                SparseBooleanArray positions = listView.getCheckedItemPositions();
+                if (id == R.id.delete_from_list) {
+                    for ( int i = positions.size() - 1; i>=0; i--){
+                        if (positions.valueAt(i)) {
+                            listItems.remove(positions.keyAt(i));
+                        }
+                    }
+                    mode.finish();
+                    mAdapter.notifyDataSetChanged();
+                    return true;
+                }
+                return false;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
 
             }
         });
@@ -129,17 +174,10 @@ public class TaskListActivity extends ActionBarActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        getMenuInflater().inflate(R.menu.menu_list_delete, menu);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        int id=item.getItemId();
-        if(id==R.id.delete_from_list){
-            AdapterView.AdapterContextMenuInfo menuInfo= (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-            listItems.remove(menuInfo.position);
-            mAdapter.notifyDataSetChanged();
-        }
         return super.onContextItemSelected(item);
 
     }
