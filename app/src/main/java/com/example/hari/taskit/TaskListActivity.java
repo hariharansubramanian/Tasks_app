@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,6 +40,7 @@ public class TaskListActivity extends ActionBarActivity {
         listItems.add(new Task());
         listItems.get(2).setName("Task 3");
         ListView listView = (ListView) findViewById(R.id.listView);
+        registerForContextMenu(listView);
         mAdapter = new TaskAdapter(listItems);
         listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -80,24 +82,23 @@ public class TaskListActivity extends ActionBarActivity {
     }
 
 
+    private class TaskAdapter extends ArrayAdapter<Task> {
+        TaskAdapter(ArrayList<Task> tasks) {
+            super(TaskListActivity.this, R.layout.list_view_layout, R.id.textview1, tasks);
+        }
 
-private class TaskAdapter extends ArrayAdapter<Task> {
-    TaskAdapter(ArrayList<Task> tasks) {
-        super(TaskListActivity.this, R.layout.list_view_layout, R.id.textview1, tasks);
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            convertView = super.getView(position, convertView, parent);
+            Task task = getItem(position);//get object into task
+            TextView taskName = (TextView) convertView.findViewById(R.id.textview1);//assign textview1 into TextView variable
+            taskName.setText(task.getName());//set each TextView row to corresponding Task objects name
+            CheckBox doneBox = (CheckBox) convertView.findViewById(R.id.checkbox1);
+            doneBox.setChecked(task.isDone());
+            return convertView;
+        }
+
     }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        convertView = super.getView(position, convertView, parent);
-        Task task = getItem(position);//get object into task
-        TextView taskName = (TextView) convertView.findViewById(R.id.textview1);//assign textview1 into TextView variable
-        taskName.setText(task.getName());//set each TextView row to corresponding Task objects name
-        CheckBox doneBox = (CheckBox) convertView.findViewById(R.id.checkbox1);
-        doneBox.setChecked(task.isDone());
-        return convertView;
-    }
-
-}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -123,5 +124,16 @@ private class TaskAdapter extends ArrayAdapter<Task> {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getMenuInflater().inflate(R.menu.menu_list_delete, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        return super.onContextItemSelected(item);
     }
 }
